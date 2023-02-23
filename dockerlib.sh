@@ -1,4 +1,15 @@
 
+function get_containers_of_volume() {
+  docker ps -a --filter volume=$1 --format json | jq '.Image' | tr -d \" | tr \\n ,
+}
+
+function stop_containers() {
+  for containerName in $(echo $1 | tr ",", " ");
+  do
+    stop_container $containerName
+  done
+}
+
 function stop_container() {
   if [ $HOT_BACKUP == "0" ];
   then
