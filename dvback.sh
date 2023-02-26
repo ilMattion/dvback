@@ -8,7 +8,7 @@ log_information "Starting backup of volumes: $VOLUMES_TO_BACKUP"
 
 for volumeName in $(echo "$VOLUMES_TO_BACKUP" | tr "," " ");
 do
-  BACKUP_FILE_NAME=$volumeName+"-"+$DATE_TIME_PREFIX
+  BACKUP_FILE_NAME=$volumeName"-"$DATE_TIME_PREFIX
   VOLUME_CONTAINERS=$(get_volume_containers $volumeName)
 
   stop_containers $VOLUME_CONTAINERS
