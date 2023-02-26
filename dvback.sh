@@ -4,19 +4,18 @@
 . dockerlib.sh
 . configurations.config
 
-log_verbose "Starting backup of volumes: $VOLUMES_TO_BACKUP"
+log_information "Starting backup of volumes: $VOLUMES_TO_BACKUP"
 
 for volumeName in $(echo "$VOLUMES_TO_BACKUP" | tr "," " ");
 do
-  log_verbose "Starting backup of volume: $volumeName"
+  BACKUP_FILE_NAME = $volumeName + "-" + $DATE_TIME_PREFIX
+  log_information "Starting backup of volume: $volumeName in $BACKUP_FOLDER with file name $BACKUP_FILE_NAME"
 
-  #CONTAINERS_OF_VOLUME=echo docker ps -a --filter volume=$volumeName --format json | jq '.Image' | tr -d \" | tr \\n ,
-  CONTAINERS_OF_VOLUME=$(get_containers_of_volume $volumeName)
-  log_verbose "$volumeName is mounted by this containers: $CONTAINERS_OF_VOLUME"
-  # Fare il backup
+  backup_volume $volumeName $BACKUP_FOLDER $BACKUP_FILE_NAME
+
   # Riavviare tutti i contenitori
 
- stop_containers $CONTAINERS_OF_VOLUME
+ #stop_containers $CONTAINERS_OF_VOLUME
  # backup_container $containerName
  # start_container $containerName
 done

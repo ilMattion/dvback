@@ -1,5 +1,9 @@
 #! /bin/bash
 
+function log_information {
+  echo "[INF] $1"
+}
+
 function log_verbose {
   echo "[VRB] $1"
 }
