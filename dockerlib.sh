@@ -1,4 +1,15 @@
 
+function get_containers_of_volume() {
+  docker ps -a --filter volume=$1 --format json | jq '.Image' | tr -d \" | tr \\n ,
+}
+
+function stop_containers() {
+  for containerName in $(echo $1 | tr ",", " ");
+  do
+    stop_container $containerName
+  done
+}
+
 function stop_container() {
   if [ $HOT_BACKUP == "0" ];
   then
@@ -18,11 +29,19 @@ function start_container() {
   fi
 }
 
-function backup_container() {
-  CONTAINER_DESTINATION_MOUNT=$(docker container inspect "$1" | jq '.[0].Mounts[0].Destination'| tr -d \")
-  CONTAINER_BACKUP_PATH="/backup/$1-$DATE_TIME_PREFIX-backup.tar"
-
+#######################################
+# Perform backup of a docker container
+# Arguments:
+#   Docker volume name
+#   Backup folder
+#   Backup file name
+#######################################
+function backup_volume() {
+  # TODO: if backup file name has extension remove
+  # TODO: check if already exists a backup
+  log_verbose "Starting backup of volume $1 in path $2 with file name $3"
   docker run --rm \
-    --volumes-from "$1" \
-    -v $BACKUP_FOLDER:/backup ubuntu tar cvf $CONTAINER_BACKUP_PATH $CONTAINER_DESTINATION_MOUNT
+	-v $1:/volume \
+	-v $2:/backup \
+	ubuntu tar cvf /backup/$3.tar /volume
 }

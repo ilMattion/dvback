@@ -4,11 +4,18 @@
 . dockerlib.sh
 . configurations.config
 
-log_verbose "Starting backup of containers: $DOCKER_CONTAINER_NAMES_TO_BACKUP"
+log_information "Starting backup of volumes: $VOLUMES_TO_BACKUP"
 
-for containerName in $(echo "$DOCKER_CONTAINER_NAMES_TO_BACKUP" | tr "," " "); 
+for volumeName in $(echo "$VOLUMES_TO_BACKUP" | tr "," " ");
 do
-  stop_container $containerName
-  backup_container $containerName
-  start_container $containerName
+  BACKUP_FILE_NAME = $volumeName + "-" + $DATE_TIME_PREFIX
+  log_information "Starting backup of volume: $volumeName in $BACKUP_FOLDER with file name $BACKUP_FILE_NAME"
+
+  backup_volume $volumeName $BACKUP_FOLDER $BACKUP_FILE_NAME
+
+  # Riavviare tutti i contenitori
+
+ #stop_containers $CONTAINERS_OF_VOLUME
+ # backup_container $containerName
+ # start_container $containerName
 done
