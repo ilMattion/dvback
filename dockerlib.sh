@@ -1,5 +1,12 @@
 
-function get_containers_of_volume() {
+#######################################
+# Return all docker containers of a
+# volume.
+# Arguments:
+#   Volume name
+#
+#######################################
+function get_volume_containers() {
   docker ps -a --filter volume=$1 --format json | jq '.Image' | tr -d \" | tr \\n ,
 }
 
@@ -19,6 +26,13 @@ function stop_container() {
     log_warning "Hot backup is not raccomanded, are you sure?"
     exit 1
   fi
+}
+
+function start_containers() {
+  for containerName in $(echo $1 | tr ",", " ");
+  do
+    start_container $containerName
+  done
 }
 
 function start_container() {
