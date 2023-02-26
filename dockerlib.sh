@@ -13,34 +13,15 @@ function get_volume_containers() {
 function stop_containers() {
   for containerName in $(echo $1 | tr ",", " ");
   do
-    stop_container $containerName
+    docker stop $containerName
   done
-}
-
-function stop_container() {
-  if [ $HOT_BACKUP == "0" ];
-  then
-    log_verbose "Stopping container $1"
-    docker stop "$1"
-  else
-    log_warning "Hot backup is not raccomanded, are you sure?"
-    exit 1
-  fi
 }
 
 function start_containers() {
   for containerName in $(echo $1 | tr ",", " ");
   do
-    start_container $containerName
+    docker start $containerName
   done
-}
-
-function start_container() {
-  if [ $HOT_BACKUP == "0" ];
-  then
-    log_verbose "Starting $1 container"
-    docker start "$1"
-  fi
 }
 
 #######################################
@@ -57,5 +38,5 @@ function backup_volume() {
   docker run --rm \
 	-v $1:/volume \
 	-v $2:/backup \
-	ubuntu tar cvf /backup/$3.tar /volume
+	ubuntu tar cf /backup/$3.tar /volume
 }
