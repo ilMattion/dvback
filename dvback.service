@@ -1,0 +1,12 @@
+[Unit]
+Description=Docker volume backup
+After=docker
+.target
+
+[Service]
+Type=simple
+User=marco
+ExecStart=/usr/bin dvback.sh
+
+[Install]
+WantedBy=multi-user.target
