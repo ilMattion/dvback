@@ -27,9 +27,9 @@ jobs:
 
       - name: Creating staging directory
         run: |
-          mkdir ./staging/bin
-          mkdir ./staging/lib/dvback
-          mkdir ./staging/etc
+          mkdir -p ./staging/bin
+          mkdir -p ./staging/lib/dvback
+          mkdir -p ./staging/etc
           
       - name: Putting data on staging folders
         run: |
