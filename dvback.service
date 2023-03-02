@@ -1,7 +1,6 @@
 [Unit]
 Description=Docker volume backup
-After=docker
-.target
+After=docker.target
 
 [Service]
 Type=simple
