@@ -26,13 +26,13 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Creating staging directory
-      - run: |
+        run: |
           mkdir staging/bin
           mkdir staging/lib/dvback
           mkdir staging/etc
           
       - name: Putting data on staging folders
-      - run: |
+        run: |
           mv $GITHUB_WORKSPACE/dvback.sh ./staging/bin/dvback
           mv $GITHUB_WORKSPACE/dockerlib.sh ./staging/lib/dvback/dockerlib.sh
           mv $GITHUB_WORKSPACE/loglib.sh ./staging/lib/dvback/loglib.sh
